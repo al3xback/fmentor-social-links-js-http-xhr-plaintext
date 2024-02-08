@@ -7,18 +7,19 @@ const URL =
 	'https://gist.githubusercontent.com/al3xback/7abee37fc5e14acfacd9bd638afaa397/raw/f9670aa9e57d6e2e96e3e0a188438105d4b81b44/social-links-data.txt';
 
 const renderCardContent = (data) => {
-	const [title, subtitle, desc] = data.split('\n');
+	const [name, location, job] = data.split('\n');
 
-	const cardEl = document.importNode(cardTemplate.content, true);
+	const cardTemplateNode = document.importNode(cardTemplate.content, true);
+	const cardEl = cardTemplateNode.querySelector('.card');
 
 	const cardTitleEl = cardEl.querySelector('.card__title');
-	cardTitleEl.textContent = title;
+	cardTitleEl.textContent = name;
 
 	const cardSubtitleEl = cardEl.querySelector('.card__subtitle');
-	cardSubtitleEl.textContent = subtitle;
+	cardSubtitleEl.textContent = location;
 
 	const cardDescEl = cardEl.querySelector('.card__desc');
-	cardDescEl.textContent = `"${desc}."`;
+	cardDescEl.textContent = `"${job}."`;
 
 	mainContainerEl.appendChild(cardEl);
 };
