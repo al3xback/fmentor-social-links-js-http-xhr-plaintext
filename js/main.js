@@ -34,6 +34,7 @@ const renderCardContent = (data) => {
 
 	for (const socialLink of transformedSocialLinks) {
 		const [name, url] = socialLink;
+
 		const cardLinkTemplateNode = document.importNode(
 			cardLinkTemplate.content,
 			true
