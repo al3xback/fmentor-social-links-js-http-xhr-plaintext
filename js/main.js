@@ -1,16 +1,25 @@
 import { sendHttpRequest } from './util.js';
 
-const mainContainerEl = document.querySelector('main .container');
+const cardWrapperEl = document.querySelector('.card-wrapper');
 const cardTemplate = document.getElementById('card-template');
+const cardLinkTemplate = document.getElementById('card-link-template');
+const loadingEl = document.querySelector('.loading');
 
 const URL =
-	'https://gist.githubusercontent.com/al3xback/7abee37fc5e14acfacd9bd638afaa397/raw/f9670aa9e57d6e2e96e3e0a188438105d4b81b44/social-links-data.txt';
+	'https://gist.githubusercontent.com/al3xback/7abee37fc5e14acfacd9bd638afaa397/raw/0628b61586f3d360c302d26f7eafa55307b5ce2a/social-links-data.txt';
 
 const renderCardContent = (data) => {
-	const [name, location, job] = data.split('\n');
+	const [name, location, job, image, ...socialLinks] = data.split('\n');
+	const transformedSocialLinks = socialLinks
+		.filter((link) => Boolean(link))
+		.map((link) => link.split(': '));
 
 	const cardTemplateNode = document.importNode(cardTemplate.content, true);
 	const cardEl = cardTemplateNode.querySelector('.card');
+
+	const cardImageEl = cardEl.querySelector('.card__image img');
+	cardImageEl.src = './images/' + image;
+	cardImageEl.alt = name;
 
 	const cardTitleEl = cardEl.querySelector('.card__title');
 	cardTitleEl.textContent = name;
@@ -21,7 +30,25 @@ const renderCardContent = (data) => {
 	const cardDescEl = cardEl.querySelector('.card__desc');
 	cardDescEl.textContent = `"${job}."`;
 
-	mainContainerEl.appendChild(cardEl);
+	const cardLinksEl = cardEl.querySelector('.card__links');
+
+	for (const socialLink of transformedSocialLinks) {
+		const [name, url] = socialLink;
+		const cardLinkTemplateNode = document.importNode(
+			cardLinkTemplate.content,
+			true
+		);
+		const cardLinkEl = cardLinkTemplateNode.querySelector('.card__link');
+
+		const cardLinkAnchorEl = cardLinkEl.querySelector('.btn');
+		cardLinkAnchorEl.href = url;
+		cardLinkAnchorEl.textContent = name;
+
+		cardLinksEl.appendChild(cardLinkTemplateNode);
+	}
+
+	loadingEl.parentElement.removeChild(loadingEl);
+	cardWrapperEl.appendChild(cardTemplateNode);
 };
 
 sendHttpRequest('GET', URL, renderCardContent);
