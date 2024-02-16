@@ -1,12 +1,12 @@
 import { sendHttpRequest } from './util.js';
 
+const URL =
+	'https://gist.githubusercontent.com/al3xback/7abee37fc5e14acfacd9bd638afaa397/raw/dda74738ac52ca5e5e253f05558f8aca922f1b77/social-links-data.txt';
+
 const cardWrapperEl = document.querySelector('.card-wrapper');
 const cardTemplate = document.getElementById('card-template');
 const cardLinkTemplate = document.getElementById('card-link-template');
 const loadingEl = document.querySelector('.loading');
-
-const URL =
-	'https://gist.githubusercontent.com/al3xback/7abee37fc5e14acfacd9bd638afaa397/raw/dda74738ac52ca5e5e253f05558f8aca922f1b77/social-links-data.txt';
 
 const removeLoading = () => {
 	loadingEl.parentElement.removeChild(loadingEl);
